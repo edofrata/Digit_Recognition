@@ -1,6 +1,3 @@
-
-//import java.lang.Math;
-
 public class Activation{
 
 	public static class Linear {

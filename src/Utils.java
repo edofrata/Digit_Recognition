@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class Utils {
   
@@ -7,6 +8,8 @@ public class Utils {
 
     public int[][] test_dataset = new int[2810][64];//testing dataset
     public int[] test_labels = new int[2810];//testing labels
+
+    public boolean the_end = false; //in order to make the software continue
 
     // it reads in tthe data
     public void Reader(String file, int[][] dataset, int[] labels){
@@ -55,6 +58,43 @@ public class Utils {
         }
 
     }
+// function that starts the software and keeps it running
+    public void start(){
 
+        System.out.println("\n-----Welcome on Digit Recognition-----");
+        System.out.println("\nTo Train The Neural Network -----> 1");
+        System.out.println("To Test The Neural Network  -----> 2");
+        System.out.println("To Exit The Software        -----> 3");
 
+        Scanner input_choice = new Scanner(System.in);
+        System.out.print("Please Insert Your Choice: ");
+
+        String usr_choice = input_choice.nextLine();
+
+        switch(usr_choice){
+
+            case "1":
+                 // filling up the train dataset
+                Reader("cw2DataSet1.csv", train_dataset, train_labels);
+                print_array( train_dataset, train_labels);
+                break;
+            case "2":
+                 // filling up the test dataset
+                Reader("cw2DataSet2.csv", test_dataset, test_labels);
+                print_array(test_dataset, test_labels);
+                break;
+            case "3": 
+                System.out.println("\nHope You Enjoyed! GoodBye!");
+                the_end = true;
+                input_choice.close();
+                System.exit(1);
+            
+            default:
+                System.out.println("\nWRONG INPUT! PLEASE TRY AGAIN!");
+                break;
+
+        }
+    
+       
+    }
 }
