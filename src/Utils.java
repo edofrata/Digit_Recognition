@@ -32,9 +32,7 @@ public class Utils {
                     }
 
                      dataset[row++] = new Sample(dataset_tmp, Integer.parseInt(split_line[split_line.length-1]), new ArrayList<Double>());
-            
-
-
+        
                 }
                 // closing the buffer reader
                 data_reader.close();
