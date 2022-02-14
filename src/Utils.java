@@ -1,38 +1,40 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Utils {
   
-    public int[][] train_dataset = new int[2810][64]; //training dataset
-    public int[] train_labels = new int[2810];//training labels
+    public Sample[] train_dataset = new Sample[2810]; //training dataset
+    public Sample[] test_dataset = new Sample[2810];//testing dataset
 
-    public int[][] test_dataset = new int[2810][64];//testing dataset
-    public int[] test_labels = new int[2810];//testing labels
-
+  
     public boolean the_end = false; //in order to make the software continue
 
     // it reads in tthe data
-    public void Reader(String file, int[][] dataset, int[] labels){
+    public void Reader(String file, Sample[] dataset){
 
         try {
 
                 // string which keeps track of the current line
                 String current_line;
+               
                 // Buffer reader for the txt file
                 BufferedReader data_reader = new BufferedReader(new FileReader("Datasets/" + file.trim()));
-   
+                
                 int row = 0; //row of the matrix
-                int column = 0; //column of the matrix
                 while ((current_line = data_reader.readLine()) != null) {
-        
+                    int[] dataset_tmp = new int[64];
                     // need to trim what it reads, if there is any space,  and store as object into the arraylist
                     String[] split_line = current_line.trim().split(",");
-                    for(int line =0; line < split_line.length - 1; line++, column++){
-                        dataset[row][column] = Integer.parseInt(split_line[line]);
+                    for(int line =0; line < split_line.length - 1; line++){
+                        dataset_tmp[line] = Integer.parseInt(split_line[line]);
+                   
                     }
-                        labels[row] = Integer.parseInt(split_line[split_line.length-1]);
-                        row++; column = 0;
-                        
+
+                     dataset[row++] = new Sample(dataset_tmp, Integer.parseInt(split_line[split_line.length-1]), new ArrayList<Double>());
+            
+
+
                 }
                 // closing the buffer reader
                 data_reader.close();
@@ -45,18 +47,18 @@ public class Utils {
     }
 
 // prints out the array 2d and a single array for debugging purposes
-    public void print_array(int[][] array_2d, int[] array_1d){
+    public void print_array(Sample[] array){
 
-        for(int i = 0; i < array_2d.length; i++){
-            System.out.print(" IMAGE NUMBER " + i + " [");
-            for(int j = 0; j < array_2d[i].length;j++ ){
-
-                System.out.print(array_2d[i][j] + " ");
+        for(int sample = 0; sample< array.length; sample++){
+            System.out.print("\nIMAGE NUMBER " + sample + " [");
+            for(int pixel = 0; pixel < array[sample].getImage().length; pixel++){
+                System.out.print(array[sample].getImage()[pixel] + " ");
             }
-            System.out.print( "] THE LABEL IS --> " + array_1d[i]);
-            System.out.println();
+            System.out.println(  "]" + " " + array[sample].getLabel());
+            System.out.println();            
+        
         }
-
+  
     }
 // function that starts the software and keeps it running
     public void start(){
@@ -75,13 +77,13 @@ public class Utils {
 
             case "1":
                  // filling up the train dataset
-                Reader("cw2DataSet1.csv", train_dataset, train_labels);
-                print_array( train_dataset, train_labels);
+                Reader("cw2DataSet1.csv", train_dataset);
+                print_array(train_dataset);
                 break;
             case "2":
                  // filling up the test dataset
-                Reader("cw2DataSet2.csv", test_dataset, test_labels);
-                print_array(test_dataset, test_labels);
+                Reader("cw2DataSet2.csv", test_dataset);
+                print_array(test_dataset);
                 break;
             case "3": 
                 System.out.println("\nHope You Enjoyed! GoodBye!");
