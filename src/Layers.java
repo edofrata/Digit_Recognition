@@ -1,16 +1,7 @@
 public class Layers {
-    
 
+    public Layers() {
 
-public Layers(){
-
-    
-
-
-
-};
-
-
-
+    };
 
 }

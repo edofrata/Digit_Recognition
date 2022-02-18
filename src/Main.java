@@ -9,8 +9,8 @@ public class Main {
             util.start();
         } 
         
-        // Neuron neuron = new Neuron(2, 3 , 3);
-        // neuron.fill_matrix(64, 3, 3, 2);
+        // Neuron neuron = new Neuron(2, 3,3);
+        // neuron.fill_matrix(3, 3, 2);
         // for(double[] c : neuron.getMatrix()){
         //     for(double ciao : c){
         //         System.out.print(ciao + " ");

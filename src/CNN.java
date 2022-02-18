@@ -1,5 +1,6 @@
 public class CNN {
   
+    public CNN(){}
     // method that applies convoluttional to the input image
     public double Conv2d(int feature_maps, int[] size_kernel, int[] dataset) {
 

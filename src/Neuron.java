@@ -3,22 +3,31 @@ public class Neuron {
     private double[][] matrix_weight;
     private double[] gradients;
     private double[][] outputs;
+    private double bias;
 
     public Neuron(int number_inputs, int X, int Y){
 
         this.matrix_weight = new double[number_inputs][X * Y];
         this.gradients = new double[X * Y];
         this.outputs = new double[number_inputs][X*Y];
+        this.bias = Math.random() * 1;
     }
 
-public double[][] fill_matrix(int inputs, int X, int Y, int number_filters){
-    return Weights_Matrix(inputs, X, Y, number_filters);
-}
+    public double[][] fill_matrix( int X, int Y, int number_filters){
+        return Weights_Matrix(X, Y, number_filters);
+    }
 // it retrieves the matrix weight
     public double[][] getMatrix(){
         return matrix_weight;
     }
-
+// it retrieves the bias
+    public double getBias(){
+        return bias;
+    }
+// it sets the new value of the bias
+    public void setBias(double value){
+        bias = value;
+    }
 // it retrieves the gradients
     public double[] getGradients(){
         return gradients;
@@ -53,9 +62,10 @@ public double[][] fill_matrix(int inputs, int X, int Y, int number_filters){
 	 * @return double
 	 */
     // initializing the matrix of weights
-    public double[][] Weights_Matrix(int inputs, int X, int Y, int number_filters) {
+    public double[][] Weights_Matrix(int X, int Y, int number_filters) {
     // Relu Weights Inizialization
-        double weight_formula = Activation.Relu.weight_inizialization(inputs);
+        Sample sample = new Sample();
+        double weight_formula = Activation.Relu.weight_inizialization(sample.getImage().length);
 
     // HeNormal Weight initialization
         for(int weight_row = 0; weight_row < number_filters; weight_row++){

@@ -6,6 +6,8 @@ public class Sample {
     int label; //label of the sample
     ArrayList<Double> gradients = new ArrayList<>(); //Array which will contain the gradients
     
+    public Sample(){}
+
     public Sample(int[] image, int label,  ArrayList<Double> gradients){
 
         this.image = image;
