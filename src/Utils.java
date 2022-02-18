@@ -6,10 +6,9 @@ public class Utils {
   
     public Sample[] train_dataset = new Sample[2810]; //training dataset
     public Sample[] test_dataset = new Sample[2810];//testing dataset
-
-  
     public boolean the_end = false; //in order to make the software continue
 
+    
     // it reads in tthe data
     public void Reader(String file, Sample[] dataset){
 
@@ -52,9 +51,7 @@ public class Utils {
             for(int pixel = 0; pixel < array[sample].getImage().length; pixel++){
                 System.out.print(array[sample].getImage()[pixel] + " ");
             }
-            System.out.println(  "]" + " " + array[sample].getLabel());
-            System.out.println();            
-        
+            System.out.println(  "]" + " " + array[sample].getLabel());            
         }
   
     }

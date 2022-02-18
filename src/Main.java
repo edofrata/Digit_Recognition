@@ -7,11 +7,16 @@ public class Main {
         // while loop to make the software carry on until the user presses "3"
         while(!util.the_end){
             util.start();
-        }
+        } 
         
-        // CNN cnn = new CNN();
-        // cnn.Weights_Matrix(new int[32][9]);
-        // util.print_array(cnn.weights_conv2d);
+        // Neuron neuron = new Neuron(2, 3 , 3);
+        // neuron.fill_matrix(64, 3, 3, 2);
+        // for(double[] c : neuron.getMatrix()){
+        //     for(double ciao : c){
+        //         System.out.print(ciao + " ");
+        //     }
+        //     System.out.println();
+        // }
     }
  
 }

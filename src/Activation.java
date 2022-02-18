@@ -85,6 +85,7 @@ public class Activation{
 
 	public static class Relu{
 
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
