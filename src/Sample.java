@@ -1,32 +1,33 @@
-import java.util.ArrayList;
-
 public class Sample {
     
-    int[] image = new int[64]; //array which keeps the image
-    int label; //label of the sample
-    ArrayList<Double> gradients = new ArrayList<>(); //Array which will contain the gradients
-    
-    public Sample(){}
-
-    public Sample(int[] image, int label,  ArrayList<Double> gradients){
-
-        this.image = image;
-        this.label = label;
-        this.gradients = gradients;
+    private final double[]      IMAGE_1D; //array which keeps the image
+    private final double        LABEL; //label of the sample
+    private final double[][]    IMAGE_2D;
+    double[] one_hot;  //adding the target value to the class
+  
+    public Sample(final double[] IMAGE, final double LABEL){
+        final double SQR_ROOT   = Math.sqrt(IMAGE.length);
+        this.IMAGE_1D           = IMAGE;
+        this.LABEL              = LABEL;
+        this.IMAGE_2D           = new double[(int)SQR_ROOT][(int)SQR_ROOT];
+        Utils.from_1d_to_2d(IMAGE, IMAGE_2D);
 
     }
-
-    // Getter methods
-    // it returns the image of the sample
-    public int[] getImage(){
-        return image;
+    // ------------- Getter --------------
+ // it returns the image of the sample
+    public double[] getImage1D(){
+        return IMAGE_1D;
     }
-    // returns the label of the sample
-    public int getLabel(){
-        return label;
+ // returns the label of the sample
+    public double getLabel(){
+        return LABEL;
     }
-    // returns the gradients of the sample
-    public ArrayList<Double> getGradients(){
-        return gradients;
+ // returns the label of the sample
+    public double[][] getImage2D(){
+        return IMAGE_2D;
+    }
+// setting the label in the output
+    public double[] setOneHot(double[] label){
+        return this.one_hot = label;
     }
 }

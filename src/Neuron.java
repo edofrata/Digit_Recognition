@@ -1,79 +1,98 @@
 public class Neuron {
 
-    private double[][] matrix_weight;
-    private double[] gradients;
-    private double[][] outputs;
-    private double bias;
+    private double[][]   sample_input;
+    private double[][][] matrix_weight;        //weights of matrix (kernel)
+    private double[][][] gradients;           //where all the gradients will be kept 
+    private double[][] outputs;              //outputs given from linear transformation
+    private int number_inputs;
+    private double bias;                  // bias of the nuron
+    private double gradient_bias;        //gradient of bias
 
-    public Neuron(int number_inputs, int X, int Y){
+    public Neuron(int number_channels, int Y, int X, int number_inputs){
+        int square_input = (int)Math.sqrt(number_inputs);
+        this.sample_input = new double[square_input][square_input];
+        
+        this.number_inputs = (int) (square_input - Math.sqrt(X*Y)) + 1;   //calculating the output feature map
+        
+        this.matrix_weight   = new double[number_channels][Y][X];               
+        this.gradients       = new double[number_channels][Y][X];
+        this.outputs         = new double[number_inputs][number_inputs];
 
-        this.matrix_weight = new double[number_inputs][X * Y];
-        this.gradients = new double[X * Y];
-        this.outputs = new double[number_inputs][X*Y];
-        this.bias = Math.random() * 1;
+        // bias
+        this.bias            = Math.random() * 1;
+        this.gradient_bias   = 0;
     }
 
-    public double[][] fill_matrix( int X, int Y, int number_filters){
-        return Weights_Matrix(X, Y, number_filters);
-    }
+    // -------------- GETTER --------------------
 // it retrieves the matrix weight
-    public double[][] getMatrix(){
-        return matrix_weight;
+    public double[][][] getMatrix(){
+        return this.matrix_weight;
     }
+    
 // it retrieves the bias
     public double getBias(){
-        return bias;
+        return this.bias;
     }
-// it sets the new value of the bias
-    public void setBias(double value){
-        bias = value;
+// retrieving number of inputs
+    public int getNum_Inputs(){
+        return this.number_inputs;
     }
 // it retrieves the gradients
-    public double[] getGradients(){
-        return gradients;
+    public double[][][] getGradients(){
+        return this.gradients;
     }
 
 // it retrieves the matrix outputs
     public double[][] getOutputs(){
-        return outputs;
+        return this.outputs;
+    }
+// retrieves bias gradient
+    public double getBiasGradient(){
+        return this.gradient_bias;
+    }
+//retrieves the sample input given
+    public double[][] getInputImage(){
+        return this.sample_input;
     }
 
+       // -------------- SETTER --------------------
 // it sets the matrix outputs with new values
     public void setOutputs(int row,int column, double value){
-         outputs[row][column] = value;
+         this.outputs[row][column] = value;
     }
 
 // it sets the matrix gradients with new values
-    public void setGradients(int index, double value){
-        gradients[index] = value;
+    public void setGradients(int filter_index, int row, int column, double value){
+        this.gradients[filter_index][row][column]= value;
+    }
+// it sets the new value of the bias
+    public void setBias(double value){
+        this.bias = value;
+    }
+// it sets the new value of the bias
+    public void setBiasGradient(double value){
+        this.gradient_bias = value;
     }
 
+// it sets the 3d array of weight
+    public void setWeights(final int CHANNEL_INDEX, final int Y, final int X, final double VALUE){
+        this.matrix_weight[CHANNEL_INDEX][Y][X] = VALUE;
+    }
+
+//sets the sample input given
+    public double[][] setInputImage(double[][] image){
+        return this.sample_input = image;
+    }
+
+           // -------------- SUM --------------------
 // it sets the matrix gradients with new values
-    public void sumGradients(int index, double value){
-        gradients[index] += value;
+    public void sumGradients(int filter_index, int row, int column, double value){
+        this.gradients[filter_index][row][column] += value;
     }
 
-    /**
-	 * 
-	 * @param inputs which is yhe number of inputs which will receive
-     * @param X which will be the X length of the kernel size
-     * @param Y which will be the Y length of the kernel size
-     * @param number_filters which will be the number of the filters desired
-	 * @return double
-	 */
-    // initializing the matrix of weights
-    public double[][] Weights_Matrix(int X, int Y, int number_filters) {
-    // Relu Weights Inizialization
-        Sample sample = new Sample();
-        double weight_formula = Activation.Relu.weight_inizialization(sample.getImage().length);
-
-    // HeNormal Weight initialization
-        for(int weight_row = 0; weight_row < number_filters; weight_row++){
-            for(int weight_col = 0; weight_col < (X * Y); weight_col++){
-
-                matrix_weight[weight_row][weight_col] = Math.random() * weight_formula;
-            }
-        }
-        return matrix_weight;
+// it sets the new value of the bias
+    public void sumBiasGradient(double value){
+        this.gradient_bias += value;
     }
+  
 }

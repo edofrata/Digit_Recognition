@@ -1,7 +1,7 @@
-public class Activation{
+public class Activations{
 
 	public static class Linear {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -19,7 +19,7 @@ public class Activation{
 	}
 
 	public static class Binary {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X intput
@@ -35,7 +35,7 @@ public class Activation{
 	}
 
 	public static class Sigmoid {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -51,7 +51,7 @@ public class Activation{
 	}
 
 	public static class Tanh {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -67,7 +67,7 @@ public class Activation{
 	}
 
 	public static class Swish {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -85,7 +85,11 @@ public class Activation{
 
 	public static class Relu{
 
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
+		public static double weight_inizialization(int number_inputs){ 
+			final double LOWER = -(1.0 / Math.sqrt(number_inputs));
+			final double UPPER =  (1.0 / Math.sqrt(number_inputs));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 		/**
 		 * 
 		 * @param X input
@@ -101,7 +105,11 @@ public class Activation{
 	}
 
 	public static class Lrelu {
-
+		public static double weight_inizialization(int number_inputs){ 
+			final double LOWER = -(1.0 / Math.sqrt(number_inputs));
+            final double UPPER =  (1.0 / Math.sqrt(number_inputs));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 		/**
 		 * 
 		 * @param X input
@@ -117,7 +125,7 @@ public class Activation{
 	}
 
 	public static class Gelu {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -136,7 +144,7 @@ public class Activation{
 
 	public static class Selu {
 		private static final double LAMBDA =1.05070098, ALPHA = 1.67326324;
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -156,7 +164,7 @@ public class Activation{
 	}
 
 	public static class Prelu {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -175,7 +183,7 @@ public class Activation{
 
 
 	public static class Elu {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -194,7 +202,7 @@ public class Activation{
 	}
 
 	public static class Softplus {
-
+		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
@@ -210,7 +218,28 @@ public class Activation{
 	}
 
 	public static class Softmax {
+		/**
+         * Xavier Weight initialization
+         * @param N_INPUTS umber of inputs of the current node
+         * @return    Random double with a uniform probability distribution
+         */
+        public static double weight_inizialization(final int N_INPUTS){
+            final double LOWER = -(1.0 / Math.sqrt(N_INPUTS));
+            final double UPPER =  (1.0 / Math.sqrt(N_INPUTS));
+            return LOWER + Math.random() * (UPPER - LOWER);
+        }
 
+		/**
+         * Normalized Xavier Weight initialization
+         * @param N_INPUTS number of inputs of the current node
+         * @param N_OUPUTS number of output of the current node
+         * @return Random double with a uniform probability distribution
+         */
+        public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+            final double LOWER = -(6.0 / Math.sqrt(N_INPUTS + N_OUPUTS));
+            final double UPPER =  (6.0 / Math.sqrt(N_INPUTS + N_OUPUTS));
+            return LOWER + Math.random() * (UPPER - LOWER);
+        }
 		/**
 		 * 
 		 * @param I non-linear output
@@ -238,10 +267,11 @@ public class Activation{
 			final double F = Math.exp(F_CLASSES[I]);
 
 			for(int index = 0 ; index < F_CLASSES.length; index++){
-				sum += F == F_CLASSES[index]? F * (1 - F_CLASSES[index]): -F * F_CLASSES[index];
+				// sum += F == F_CLASSES[index]? F * (1 - F_CLASSES[index]): -F * F_CLASSES[index];
+				sum += Math.exp(F_CLASSES[index]);
 			}
 
-			return sum;
+			return F/sum;
 		}
 	}
     
@@ -251,6 +281,7 @@ public class Activation{
 	 * @return Gauss error
 	 */
 	private static double erf(final double z) {
+		
 		double t = 1.0 / (1.0 + 0.5 * Math.abs(z));
 
 		// use Horner's method
