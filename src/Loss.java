@@ -69,8 +69,8 @@ public class Loss {
          * @return
          */
         // public static double derivative(final double PREV_Y, final double T){ return T * (PREV_Y - 1); }
-        public static double derivative(final double PREV_Y){ return -(1.0 / (1.0 - PREV_Y)); }
-        // public static double derivative(final double PREV_Y, final double T){ return PREV_Y - T; }
+        // public static double derivative(final double PREV_Y){ return -(1.0 / (1.0 - PREV_Y)); }
+        public static double derivative(final double PREV_Y, final double T){ return PREV_Y - T; }
     }
 
     public static class Huber{

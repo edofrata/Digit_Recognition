@@ -78,11 +78,14 @@ public class Dataset {
 
         for(final Sample SAMPLE : this.COLLECTION ){
             final double[] ONE_HOT = new double[this.CLASSES.length];
-        
             for(int classes = 0; classes < this.CLASSES.length; classes++){
                 ONE_HOT[classes] = SAMPLE.getLabel() == this.CLASSES[classes] ? 1.0 : 0.0;
-            }
+            }  
+            
+            SAMPLE.setOneHot(ONE_HOT);
+            
         }
+
     }
 
 
@@ -96,7 +99,11 @@ public class Dataset {
     public int getSize(){
         return COLLECTION.length;
     }
-
+// retrieves the class label
+   public double getLabel(final int INDEX){
+    return CLASSES[INDEX];
+}
+ 
 
 // -------------- SETTER METHODS -------------------
     
