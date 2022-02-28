@@ -52,11 +52,6 @@ public class Layers {
             public void derivative(final Neuron.Node NODE, final Layers LAYER){NODE.setPartial_Derivative(Activations.Sigmoid.derivative    (NODE.getBack_Linear()));}
             public double random_weight(final Layers LAYER){return Activations.Sigmoid.weight_inizialization(LAYER.getInputs().length *     (LAYER.getKernel_Y() * LAYER.getKernel_X()));}
         },
-        TANH{
-            public void function(final Neuron.Node NODE, final Layers LAYER){NODE.setNode_Value(Activations.Tanh.function                   (NODE.getForward_Linear()));}
-            public void derivative(final Neuron.Node NODE, final Layers LAYER){NODE.setPartial_Derivative(Activations.Tanh.derivative       (NODE.getOutputNode()));}
-            public double random_weight(final Layers LAYER){ return Activations.Tanh.weight_inizialization(LAYER.getInputs().length * (LAYER.getKernel_Y() * LAYER.getKernel_X()));}
-        }, 
         SWISH{
             public void function(final Neuron.Node NODE, final Layers LAYER){NODE.setNode_Value(Activations.Swish.function                  (NODE.getForward_Linear()));}
             public void derivative(final Neuron.Node NODE, final Layers LAYER){NODE.setPartial_Derivative(Activations.Swish.derivative      (NODE.getBack_Linear(), NODE.getOutputNode()));}

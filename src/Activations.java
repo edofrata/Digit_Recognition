@@ -1,40 +1,33 @@
 public class Activations{
 
 	public static class Sigmoid {
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
 		 * @return function
 		 */
-		public static double function(final double X){ return (1/(1 + Math.exp(-X))); }
+		public static double function(final double X){ return (1.0 / (1.0 + Math.exp(-X))); }
 		/**
 		 * 
 		 * @param F output
 		 * @return derivative
 		 */
-		public static double derivative(final double F){ return F*(1-F); }
-	}
+		public static double derivative(final double F){ return F * (1.0 - F); }
 
-	public static class Tanh {
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
-		 * 
-		 * @param X input
-		 * @return function
+		 * Xavier Weight initialization
+		 * @param N_INPUTS umber of inputs of the current node
+		 * @return	Random double with a uniform probability distribution
 		 */
-		public static double function(final double X){ return (2/(1 + Math.exp(-2*X))) -1; }
-		/**
-		 * 
-		 * @param F output
-		 * @return derivative
-		 */
-		public static double derivative(final double F){ return 1- Math.pow(F, 2); }
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -(1.0 / Math.sqrt(N_INPUTS));
+			final double UPPER =(1.0 / Math.sqrt(N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 	}
 
 	public static class Swish {
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
-		/**
+	/**
 		 * 
 		 * @param X input
 		 * @return function
@@ -46,39 +39,69 @@ public class Activations{
 		 * @param F output
 		 * @return derivative
 		 */
-		public static double derivative(final double X, final double F){ return F + Sigmoid.function(X) * (1-F); }
+		public static double derivative(final double X, final double F){ return F + Sigmoid.function(X) * (1.0-F); }
+		/**
+		 * He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @return random double with a Gaussian probability
+		 */
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
+			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+		/**
+		 * Normalized He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @param N_OUPUTS number of output of the current node
+		 * @return Random double with a uniform probability distribution
+		 */
+		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
+			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 	}
 
 	public static class Relu{
 
-		// weight initialization for the Relu, which is a rivisited formula from Xavier adapted for ReLu
-		public static double weight_inizialization(int number_inputs){ 
-			final double LOWER = -(1.0 / Math.sqrt(number_inputs));
-			final double UPPER =  (1.0 / Math.sqrt(number_inputs));
-			return LOWER + Math.random() * (UPPER - LOWER);
-		}
 		/**
 		 * 
 		 * @param X input
 		 * @return function
 		 */
-		public static double function(final double X){ return X < 0? 0: X; }
+		public static double function(final double X){ return X < 0.0? 0.0: X; }
 		/**
 		 * 
 		 * @param X input
 		 * @return derivative
 		 */
-		public static double derivative(final double X){ return X < 0? 0 : 1; }
+		public static double derivative(final double X){ return X > 0.0? 1.0 : 0.0; }
+		/**
+		 * He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @return random double with a Gaussian probability
+		 */
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
+			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+		/**
+		 * Normalized He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @param N_OUPUTS number of output of the current node
+		 * @return Random double with a uniform probability distribution
+		 */
+		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
+			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 	}
 
 	public static class Lrelu {
 
-	// weight initialization for the Relu, which is a rivisited formula from Xavier adapted for ReLu
-		public static double weight_inizialization(int number_inputs){ 
-			final double LOWER = -(1.0 / Math.sqrt(number_inputs));
-            final double UPPER =  (1.0 / Math.sqrt(number_inputs));
-			return LOWER + Math.random() * (UPPER - LOWER);
-		}
 		/**
 		 * 
 		 * @param X input
@@ -91,18 +114,39 @@ public class Activations{
 		 * @return derivative
 		 */
 		public static double derivative(final double X){ return Prelu.derivative(X, 0.01); }
+		/**
+		 * He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @return random double with a Gaussian probability
+		 */
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
+			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+		/**
+		 * Normalized He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @param N_OUPUTS number of output of the current node
+		 * @return Random double with a uniform probability distribution
+		 */
+		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
+			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+
 	}
 
 	public static class Selu {
-		private static final double LAMBDA =1.05070098, ALPHA = 1.67326324;
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
+		private static final double LAMBDA = 1.05070098, ALPHA = 1.67326324;
 		/**
 		 * 
 		 * @param X input
 		 * @return function
 		 */
 		public static double function(final double X){
-			return X < 0? LAMBDA * (ALPHA * (Math.exp(X) - 1)): LAMBDA * X;
+			return X < 0? LAMBDA * (ALPHA * (Math.exp(X) - 1.0)): LAMBDA * X;
 		}
 		/**
 		 * 
@@ -112,39 +156,100 @@ public class Activations{
 		public static double derivative(final double X){
 			return X < 0? LAMBDA * (ALPHA * Math.exp(X)): LAMBDA;
 		}
+		/**
+		 * He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @return random double with a Gaussian probability
+		 */
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
+			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+		/**
+		 * Normalized He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @param N_OUPUTS number of output of the current node
+		 * @return Random double with a uniform probability distribution
+		 */
+		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
+			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 	}
 
 	public static class Prelu {
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
-		/**
+	/**
 		 * 
 		 * @param X input
 		 * @param A parameter
 		 * @return function
 		 */
-		public static double function(final double X, final double A){ return X < 0? A*X: X; }
+		public static double function(final double X, final double A){ return X < 0.0? A*X: X; }
 		/**
 		 * 
 		 * @param X input
 		 * @param A parameter
 		 * @return derivative
 		 */
-		public static double derivative(final double X, final double A){ return X < 0? A: 1; }
+		public static double derivative(final double X, final double A){ return X < 0.0? A: 1.0; }
+		/**
+		 * He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @return random double with a Gaussian probability
+		 */
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
+			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+		/**
+		 * Normalized He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @param N_OUPUTS number of output of the current node
+		 * @return Random double with a uniform probability distribution
+		 */
+		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
+			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 	}
 	public static class Softplus {
-		public static double weight_inizialization(int number_inputs){ return Math.sqrt(2.0 / number_inputs);}
 		/**
 		 * 
 		 * @param X input
 		 * @return function
 		 */
-		public static double function(final double X){ return Math.log(Math.exp(X) + 1); }
+		public static double function(final double X){ return Math.log(Math.exp(X) + 1.0); }
 		/**
 		 * 
 		 * @param X input
 		 * @return derivative
 		 */
-		public static double derivative(final double X){ return 1 / (1 + Math.exp(-X)); }
+		public static double derivative(final double X){ return 1.0 / (1.0 + Math.exp(-X)); }
+		/**
+		 * He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @return random double with a Gaussian probability
+		 */
+		public static double weight_inizialization(final int N_INPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
+			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
+		/**
+		 * Normalized He Weight Initialization
+		 * @param N_INPUTS number of inputs of the current node
+		 * @param N_OUPUTS number of output of the current node
+		 * @return Random double with a uniform probability distribution
+		 */
+		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
+			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
+			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
+			return LOWER + Math.random() * (UPPER - LOWER);
+		}
 	}
 
 	public static class Softmax {

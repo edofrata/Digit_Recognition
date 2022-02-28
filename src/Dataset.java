@@ -81,11 +81,8 @@ public class Dataset {
             for(int classes = 0; classes < this.CLASSES.length; classes++){
                 ONE_HOT[classes] = SAMPLE.getLabel() == this.CLASSES[classes] ? 1.0 : 0.0;
             }  
-            
             SAMPLE.setOneHot(ONE_HOT);
-            
         }
-
     }
 
 

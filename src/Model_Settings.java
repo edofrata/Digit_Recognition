@@ -40,16 +40,6 @@ public class Model_Settings {
                     inject_error(Loss.Cross_Entropy.derivative(NODES[node].getOutputNode(), SAMPLE.getOneHot_index(node)),NODES[node]);
                }
             }
-        },
-        HUBER{
-            public void derivative(final Layers LAYER, final Sample SAMPLE){
-                
-            }
-        }, 
-        KULLBACK{
-            public void derivative(final Layers LAYER, final Sample SAMPLE){
-                
-            }
         };
 
         public abstract void derivative(final Layers LAYER, final Sample SAMPLE);
@@ -103,7 +93,7 @@ public class Model_Settings {
                 }
             }
             //to be implemented
-            System.out.println("Accuracy: " + accuracy() );
+            // System.out.println("Accuracy: " + accuracy() );
         }
     }
 

@@ -68,42 +68,8 @@ public class Loss {
          * @param T target value
          * @return
          */
-        // public static double derivative(final double PREV_Y, final double T){ return T * (PREV_Y - 1); }
-        // public static double derivative(final double PREV_Y){ return -(1.0 / (1.0 - PREV_Y)); }
         public static double derivative(final double PREV_Y, final double T){ return PREV_Y - T; }
     }
 
-    public static class Huber{
-        /**
-		 * 
-         * @param y_hat the output predicted from the model 
-         * @param T the output (target) which should have been predicted
-		 * @return double
-		 */
-        public static double function(final double y_hat, final double T){
-            final short DELTA = 1;
-            return Math.abs(y_hat - T) < DELTA ?  Math.pow((0.5 * (T - y_hat)), 2) : DELTA * (Math.abs(T - y_hat) -0.5 * DELTA);
-        }
-        public static double derivative(){return 0.0;}
-    }
 
-    public static class Kullback{
-        /**
-		 * 
-         * @param y_hat the output predicted from the model 
-         * @param y the output which should have been predicted
-         * @param classes array of all the output classes
-		 * @return double
-		 */
-        public static double function(final double[] classes_pred, final double[] classes_act){
-            double sum =0; 
-
-            for(int index = 0 ; index < classes_pred.length; index++){
-				sum += classes_pred[index] * (Math.log((classes_pred[index]/classes_act[index])));
-			}
-
-            return sum;
-        }
-        public static double derivative(){return 0.0;}
-    }
 }

@@ -10,7 +10,6 @@ public class Neuron {
 
     public Neuron(int number_channels, int Y, int X, int number_inputs){
         int square_input = (int)Math.sqrt(number_inputs);
-        // this.sample_input = new double[square_input][square_input];
         
         this.OUTPUT_SIZE = (int) (square_input - Math.sqrt(X*Y)) + 1;   //calculating the output feature map
         
@@ -105,28 +104,13 @@ public class Neuron {
     public double getBias(final int INDEX_Y, final int INDEX_X){
         return this.BIAS[INDEX_Y][INDEX_X];
     }
-// // retrieving number of inputs
-//     public int getNum_Inputs(){
-//         return this.OUTPUT_SIZE;
-//     }
-// it retrieves the gradients
-    // public double[][][] getGradients(){
-    //     return this.gradients;
-    // }
+
 
 // it retrieves the matrix outputs
     public Node[][] getOutputs(){
         return this.OUTPUTS;
     }
-// // retrieves bias gradient
-//     public double getBiasGradient(final int INDEX_Y, final int INDEX_X){
-//         return this.gradient_bias[INDEX_Y][INDEX_X];
-//     }
 
-// //retrieves the sample input given
-//     public double[][] getInputImage(){
-//         return this.sample_input;
-//     }
 
        // -------------- SETTER --------------------
 // it sets the matrix outputs with new values
@@ -139,30 +123,12 @@ public class Neuron {
         this.gradients[filter_index][row][column]= value;
     }
     
-// // it sets the new value of the bias
-//     public void setBias(final int INDEX_Y, final int INDEX_X, final double VALUE){
-//         this.BIAS[INDEX_Y][INDEX_X ]= VALUE;
-//     }
-
-
-// // it sets the new value of the bias
-//     public void setBiasGradient(final int INDEX_Y, final int INDEX_X, double value){
-//         this.gradient_bias[INDEX_Y][INDEX_X] = value;
-//     }
-
 
 // it sets the 3d array of weight
     public void setWeights(final int CHANNEL_INDEX, final int Y, final int X, final double VALUE){
         this.MATRIX_WEIGHT[CHANNEL_INDEX][Y][X] = VALUE;
     }
 
-
-
-    
-// //sets the sample input given
-//     public double[][] setInputImage(double[][] image){
-//         return this.sample_input = image;
-//     }
 
 // updating the weights
     public void weightsUpdate(final int BATCH, final double LEARNING_RATE){
