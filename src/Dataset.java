@@ -1,27 +1,27 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Arrays;
 
 public class Dataset {
     
-    private final Sample[] COLLECTION; //sample array
-    private final double[] CLASSES; //array for all the classes 10 digit
-    private final String FILE_DATASET; //name of the dataset
+    private final Sample[] COLLECTION;  //sample array
+    private final double[] CLASSES;     //array for all the classes 10 digit
+    private final String FILE_DATASET;  //name of the dataset
 
 
     public Dataset(final String DATASET_FILE){
-
-        this.FILE_DATASET = DATASET_FILE; //name of the dataset file
-        this.COLLECTION   = reader();
-        this.CLASSES      = classes_init();
-        oneHot_Gen(); //it generates the output label
+        this.FILE_DATASET = DATASET_FILE;   //name of the dataset file
+        this.COLLECTION   = reader();       //collection loader calling the reader
+        this.CLASSES      = classes_init(); //classes for the output labels
+        oneHot_Gen();                       //it generates the output label
     }
 
  // it reads in the data
       private Sample[] reader(){
         ArrayList<Sample> sample_list = new ArrayList<>(); //arraylist for the samples
-        
         try {
 
                 // string which keeps track of the current line
@@ -49,7 +49,7 @@ public class Dataset {
 
             System.out.println("No file found with that name");
         }
-        
+        // it will return the list to array and then the array of the size of the list automatically with the zero
         return sample_list.toArray(new Sample[0]);
     }
 
@@ -73,15 +73,16 @@ public class Dataset {
 
         return CLASSES_TMP;
     }
+
 // takes the label value target
     private void oneHot_Gen(){
-
+// it will loop through the whole collection in order to set 1.0 to the label of the sample
         for(final Sample SAMPLE : this.COLLECTION ){
             final double[] ONE_HOT = new double[this.CLASSES.length];
             for(int classes = 0; classes < this.CLASSES.length; classes++){
                 ONE_HOT[classes] = SAMPLE.getLabel() == this.CLASSES[classes] ? 1.0 : 0.0;
             }  
-            SAMPLE.setOneHot(ONE_HOT);
+            SAMPLE.setOneHot(ONE_HOT); //setting the output label
         }
     }
 
@@ -99,22 +100,6 @@ public class Dataset {
 // retrieves the class label
    public double getLabel(final int INDEX){
     return CLASSES[INDEX];
-}
- 
-
-// -------------- SETTER METHODS -------------------
-    
-// shuffle for avoiding overfitting
-    public void shuffle_collection(){
-        final int LENGTH = this.COLLECTION.length; //length of the collection
-// looping through thee collection and shuffling it
-        for (int sample= 0; sample < LENGTH; sample++) {
-            final int INDEX = (int)(Math.random() * (LENGTH-1));
-
-            Sample tmp = this.COLLECTION[sample];
-            this.COLLECTION[sample] = this.COLLECTION[INDEX];
-            this.COLLECTION[INDEX] = tmp;
-        }
     }
-
+ 
 }

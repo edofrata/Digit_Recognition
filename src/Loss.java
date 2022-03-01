@@ -9,7 +9,7 @@ public class Loss {
 		 * @return double
 		 */
         public static double function(final double[] classes_pred, final double[] classes_act){
-            double sum =0.0;
+            double sum = 0.0;
 
         	for(int index = 0 ; index < classes_pred.length; index++){
 				sum += Math.pow((classes_pred[index] - classes_act[index]), 2);
@@ -71,5 +71,22 @@ public class Loss {
         public static double derivative(final double PREV_Y, final double T){ return PREV_Y - T; }
     }
 
+
+    public static class Hinge{
+        /**
+		 * 
+         * @param y_hat the output predicted from the model 
+         * @param T the output (target) which should have been predicted
+		 * @return double
+		 */
+        public static double function(final double y_hat, final double T){  return Math.max(0, 1 - (T * y_hat)); }
+        /**
+         * 
+         * @param PREV_Y output of the previous neuron (softmax output)
+         * @param T target value
+         * @return
+         */
+        public static double derivative(){ return 1.0; }
+    }
 
 }

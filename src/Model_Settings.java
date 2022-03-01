@@ -1,7 +1,7 @@
 public class Model_Settings {
 
     private final Layers[] LAYERS;                  //layers of the model which will keep all the neurons inside the single layer
-    private final Layers.Layer_init[] LAYERS_INIT;  //array of the layer init
+    private final Layer_init[] LAYERS_INIT;  //array of the layer init
     private int epochs;                             //epochs of the model
     private int batch;                              //batch of the model
     private double learning_rate;                   //fixed learning rate of the model 
@@ -11,46 +11,70 @@ public class Model_Settings {
     private Losses loss;                            //loss getting from the model
 
 // model settings constructor
-    private Model_Settings(final Layers.Layer_init[] LAYERS_INIT){
+    private Model_Settings(final Layer_init[] LAYERS_INIT){
         this.LAYERS_INIT = LAYERS_INIT; 
         this.LAYERS = new Layers[LAYERS_INIT.length];
     }
 
 // simulates a constructor which will return the class
-    public static Model_Settings Procedure(final Layers.Layer_init ... LAYERS){
+    public static Model_Settings Procedure(final Layer_init ... LAYERS){
         return new Model_Settings(LAYERS);
     }
 
 // enum for the loss functions
     public static enum Losses {
         MSE{
+            // normal loss calculation
+            public void function(){
+
+
+            }
+            
+            // working out the derivative 
             public void derivative(final Layers LAYER, final Sample SAMPLE){
+
 
             }
         },
         MAE{
+            // normal loss calculation
+            public void function(){
+
+            }
+   
+            // working out the derivative 
             public void derivative(final Layers LAYER, final Sample SAMPLE){
                 
+
             }
         }, 
         CROSS_ENTROPY{
+            // normal loss calculation
+            public void function(){
+
+                
+            }
+
+            // working out the derivative 
             public void derivative(final Layers LAYER, final Sample SAMPLE){
-               final Neuron.Node[] NODES = LAYER.getNodeArray();
+               final Node[] NODES = LAYER.getNodeArray();
                for(int node = 0; node < NODES.length; node++){
                     inject_error(Loss.Cross_Entropy.derivative(NODES[node].getOutputNode(), SAMPLE.getOneHot_index(node)),NODES[node]);
                }
             }
         };
 
+        public abstract void function();
         public abstract void derivative(final Layers LAYER, final Sample SAMPLE);
-        private static void inject_error(final double ERROR, final Neuron.Node NODE){
+        // injecting the error to the chain rule
+        private static void inject_error(final double ERROR, final Node NODE){
             NODE.addTo_Chain(ERROR);
         }
     }
 
 // model initializer
     public void build_model(final Dataset TRAINING, final Dataset VALIDATION, final Losses LOSS){
-
+// addressing the parameters to the appropriate attributes
         this.training = TRAINING;
         this.validation = VALIDATION;   
         this.loss = LOSS;
@@ -79,11 +103,11 @@ public class Model_Settings {
         final int DATA_CYCLE = TRAINING.getSize() - 1;
 
         for(int epoch = 0; epoch < epochs; epoch++){
-            System.out.println("Epoch " + (epoch + 1));
-            // final Utils.Loading BAR = new Utils.Loading();
+            System.out.println("\nEpoch => " + (epoch + 1) + "/" + CNN.EPOCHS);
+            final Utils.ProgressBar BAR = new Utils.ProgressBar();
             
             for(int sample = 0, counter = 1; sample <= DATA_CYCLE ; sample++, counter++){
-                // BAR.loading(DATA_CYCLE, sample);
+                BAR.progress_bar(DATA_CYCLE, sample);
                 forwardPropagation(TRAINING.getSample(sample));
                 backpropagation(TRAINING.getSample(sample));
 
@@ -92,8 +116,6 @@ public class Model_Settings {
                     update_weights();
                 }
             }
-            //to be implemented
-            // System.out.println("Accuracy: " + accuracy() );
         }
     }
 
@@ -107,7 +129,7 @@ public class Model_Settings {
 
 // backpropagation process
     private void backpropagation(final Sample SAMPLE){
-
+        // getting the derivative of the loss 
         this.loss.derivative(this.LAYERS[this.LAYERS.length-1], SAMPLE);
         // working out the cost of the function
         for(int layer = this.LAYERS.length-1; layer >= 0; layer--){
@@ -123,6 +145,7 @@ public class Model_Settings {
 
 // validate process
     public void validate(Dataset ... val_data){
+        System.out.println("\nValidating...");
         Dataset validation = val_data.length > 0 ?  val_data[0]: this.validation;
         int correct_counter = 0;
 // looping through the samples
@@ -154,50 +177,5 @@ public class Model_Settings {
     public double accuracy(){
         return this.accuracy;
     }
-
-
-
-
-
-    // // kernel size 
-    // protected static int X = 3, Y= 3;
-    // // filter size of Convolutional Layer
-    // protected static int filters = 32;
-    // // counter for keeping the sample count
-    // private int counter = 0;
-
-    
-    // Model_Settings(){}
-    
-    
-    // public void Settings() {
-    //     // CNN CNN = new CNN();
-    
-    //     for (int epoch = 0; epoch <= 20; epoch++) {
-
-    //         System.out.println("Epoch number " + epoch);
-
-    //         for (int sample = counter; sample < Utils.train_dataset.length;) {
-    //             for (int mini_batch = 0; mini_batch <= 32; mini_batch++) {
-
-    //                 //CNN.Conv2d(filters,1, X, Y, Utils.train_dataset[sample]);
-    //                 // //Activation.ReLu(array);
-    //                 //CNN.Conv2d(filters,32,X, Y, Utils.train_dataset[sample]);
-    //                 // //CNN.Flatten(array);
-    //                 // //CNN.DenseNet(512);
-    //                 // //Activation.ReLu(array);
-    //                 // //CNN.Linear_Transformation(array);
-    //                 // //Activation.SoftMax(array);
-    //                 // //Loss.Cross_Entropy(array);
-    //                 // //Backpropagation();
-    //                 counter++;
-
-    //                 System.out.println(" Loss:   " + "loss" +  " -- " + " Accuracy: " +  "acc");       
-    //             }
-    //             // WeightUpdate();
-    //         }
-
-    //     }
-    // }
 
 }

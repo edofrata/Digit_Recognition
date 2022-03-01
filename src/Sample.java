@@ -13,6 +13,7 @@ public class Sample {
         Utils.from_1d_to_2d(IMAGE, IMAGE_2D);
         
     }
+
     // ------------- Getter --------------
  // it returns the image of the sample
     public double[] getImage1D(){
@@ -32,6 +33,7 @@ public class Sample {
         return one_hot[INDEX];
     }
 
+    // ------------- SETTER --------------
 // setting the label in the output
     public void setOneHot(double[] label){
          this.one_hot = label;

@@ -138,47 +138,6 @@ public class Activations{
 
 	}
 
-	public static class Selu {
-		private static final double LAMBDA = 1.05070098, ALPHA = 1.67326324;
-		/**
-		 * 
-		 * @param X input
-		 * @return function
-		 */
-		public static double function(final double X){
-			return X < 0? LAMBDA * (ALPHA * (Math.exp(X) - 1.0)): LAMBDA * X;
-		}
-		/**
-		 * 
-		 * @param X input
-		 * @return derivative
-		 */
-		public static double derivative(final double X){
-			return X < 0? LAMBDA * (ALPHA * Math.exp(X)): LAMBDA;
-		}
-		/**
-		 * He Weight Initialization
-		 * @param N_INPUTS number of inputs of the current node
-		 * @return random double with a Gaussian probability
-		 */
-		public static double weight_inizialization(final int N_INPUTS){
-			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
-			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
-			return LOWER + Math.random() * (UPPER - LOWER);
-		}
-		/**
-		 * Normalized He Weight Initialization
-		 * @param N_INPUTS number of inputs of the current node
-		 * @param N_OUPUTS number of output of the current node
-		 * @return Random double with a uniform probability distribution
-		 */
-		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
-			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
-			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
-			return LOWER + Math.random() * (UPPER - LOWER);
-		}
-	}
-
 	public static class Prelu {
 	/**
 		 * 
@@ -216,42 +175,7 @@ public class Activations{
 			return LOWER + Math.random() * (UPPER - LOWER);
 		}
 	}
-	public static class Softplus {
-		/**
-		 * 
-		 * @param X input
-		 * @return function
-		 */
-		public static double function(final double X){ return Math.log(Math.exp(X) + 1.0); }
-		/**
-		 * 
-		 * @param X input
-		 * @return derivative
-		 */
-		public static double derivative(final double X){ return 1.0 / (1.0 + Math.exp(-X)); }
-		/**
-		 * He Weight Initialization
-		 * @param N_INPUTS number of inputs of the current node
-		 * @return random double with a Gaussian probability
-		 */
-		public static double weight_inizialization(final int N_INPUTS){
-			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS));
-			final double UPPER =    Math.sqrt(2.0 / ((double)N_INPUTS));
-			return LOWER + Math.random() * (UPPER - LOWER);
-		}
-		/**
-		 * Normalized He Weight Initialization
-		 * @param N_INPUTS number of inputs of the current node
-		 * @param N_OUPUTS number of output of the current node
-		 * @return Random double with a uniform probability distribution
-		 */
-		public static double weight_inizialization(final int N_INPUTS, final int N_OUPUTS){
-			final double LOWER = -  Math.sqrt(2.0 / ((double)N_INPUTS * N_OUPUTS));
-			final double UPPER =    Math.sqrt(2.0 /  ((double)N_INPUTS * N_OUPUTS));
-			return LOWER + Math.random() * (UPPER - LOWER);
-		}
-	}
-
+	
 	public static class Softmax {
 		/**
          * Xavier Weight initialization
@@ -270,7 +194,7 @@ public class Activations{
 		 * @param classes non-linear output
 		 * @return function
 		 */
-		public static double function(final Neuron.Node NODE, final Neuron.Node[] F_CLASSES){
+		public static double function(final Node NODE, final Node[] F_CLASSES){
 			double sum = 0;
 			double max_value = F_CLASSES[0].getForward_Linear(); 
 			for(int index = 0 ; index < F_CLASSES.length; index++){

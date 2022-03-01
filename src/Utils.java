@@ -65,5 +65,40 @@ public class Utils {
         return array_2d;
     }
 
+    // progress bar class
+     public static class ProgressBar {
+            
+        private int counter; 
+        public ProgressBar(){ counter = -1; }
+        public void progress_bar(int size, int index){ progress_bar(size,index, 25, 100); }
+        
+        public void progress_bar(int size, int index,  int barLength, int updates){
+            
+            if (size > 0 && ++index <= size){
+                int barMax = index * updates / size;
+                    int actual_point = (short)((float)barLength / updates * barMax);
+
+                if(actual_point != counter){
+                    // counter which determines where to print
+                    counter = actual_point; 
+                    String arrow_1 = "=", dotted = "░", full_part = "", void_part = ">";
+                    int fueling_bar = (barLength-actual_point);
+
+                    if( size > index){
+                        for(int point =0; point < actual_point;point++) { full_part += arrow_1; }
+                        for(long bar=0; bar < fueling_bar; bar++){ void_part += dotted; }
+                        
+                        // printing the progress bar
+                        String progress = " [ " + full_part + void_part + " ] " + (index + 1) + "/" + (size+1) + " Samples"  +"\r";
+                        System.out.print( "\r" + progress + "\r");
+                    
+                    }else {
+                        counter = -1;
+                        System.out.print( "\33[2K" + "\r"); // it deletes the line in order to make it progress
+                    }
+                }
+            }
+        }
+    }
 
 }
