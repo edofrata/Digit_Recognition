@@ -7,7 +7,6 @@ public class Neuron {
     private final int OUTPUT_SIZE;             //number of inputs    
     private final double[][] BIAS;             // bias of the nuron
     private double[][] gradient_bias;          //gradient of bias
-
     
     public Neuron(int number_channels, int Y, int X, int number_inputs){
         int square_input = (int)Math.sqrt(number_inputs);
@@ -24,11 +23,11 @@ public class Neuron {
 
 // init neurons outputs
     private Node[][] outputs_init(final int Y, final int X){
-       final Node[][] TMP_NODE = new Node[Y][X];
+       final Node[][] TMP_NODE = new Node[Y][X]; //temporary node array
 
-       for(int node_y = 0; node_y < TMP_NODE.length; node_y++){
-        for(int node_x = 0; node_x < TMP_NODE[node_y].length; node_x++){
-            TMP_NODE[node_y][node_x] = new Node();
+       for(int node_row = 0; node_row < TMP_NODE.length; node_row++){ 
+        for(int node_col = 0; node_col < TMP_NODE[node_row].length; node_col++){
+            TMP_NODE[node_row][node_col] = new Node();
         }
        }
         return TMP_NODE;
@@ -72,11 +71,14 @@ public class Neuron {
 
 // updating the weights
     public void weightsUpdate(final int BATCH, final double LEARNING_RATE){
-
+        // looping through all the channels of the array
         for(int channel = 0; channel < this.MATRIX_WEIGHT.length; channel++ ){
-            for(int kernel_y = 0; kernel_y < this.MATRIX_WEIGHT[0].length; kernel_y++ ){
-                for(int kernel_x = 0; kernel_x < this.MATRIX_WEIGHT[0][0].length; kernel_x++ ){
-                    this.MATRIX_WEIGHT[channel][kernel_y][kernel_x] -= LEARNING_RATE * (this.gradients[channel][kernel_y][kernel_x] / (double)BATCH);
+            // looping through the row of the array
+            for(int kernel_row = 0; kernel_row < this.MATRIX_WEIGHT[0].length; kernel_row++ ){
+                // looping through the column of the array
+                for(int kernel_col = 0; kernel_col < this.MATRIX_WEIGHT[0][0].length; kernel_col++ ){
+                    // updating the weights inside the matrix
+                    this.MATRIX_WEIGHT[channel][kernel_row][kernel_col] -= LEARNING_RATE * (this.gradients[channel][kernel_row][kernel_col] / (double)BATCH);
                 }
             }
         }
@@ -88,10 +90,12 @@ public class Neuron {
 
 // updating the weights
     public void biasUpdate(final int BATCH, final double LEARNING_RATE){
-        
-            for(int bias_y = 0; bias_y < this.BIAS.length; bias_y++ ){
-                for(int bias_x = 0; bias_x < this.BIAS[0].length; bias_x++ ){
-                    this.BIAS[bias_y][bias_x] -= LEARNING_RATE * (this.gradient_bias[bias_y][bias_x] / (double)BATCH);
+         // looping through the row of the array
+            for(int bias_row = 0; bias_row < this.BIAS.length; bias_row++ ){
+                 // looping through the column of the array
+                for(int bias_col = 0; bias_col < this.BIAS[0].length; bias_col++ ){
+                      // updating the biases inside the matrix
+                    this.BIAS[bias_row][bias_col] -= LEARNING_RATE * (this.gradient_bias[bias_row][bias_col] / (double)BATCH);
                 }
             }
 
@@ -107,7 +111,7 @@ public class Neuron {
     }
 
 // it sets the new value of the bias
-    public void sumBiasGradient(final int INDEX_Y, final int INDEX_X,  final double VALUE){
-        this.gradient_bias[INDEX_Y][INDEX_X] += VALUE;
+    public void sumBiasGradient(final int INDEX_ROW, final int INDEX_COL,  final double VALUE){
+        this.gradient_bias[INDEX_ROW][INDEX_COL] += VALUE;
     } 
 }

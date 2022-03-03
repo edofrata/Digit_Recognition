@@ -62,7 +62,7 @@ public class Dataset {
         for(final Sample SAMPLE : this.COLLECTION){
             LABELS.add((double)SAMPLE.getLabel());
         }
-
+        // creating a 
         final double[] CLASSES_TMP = new double[LABELS.size()];
         int counter = 0; //counter for hashset
 

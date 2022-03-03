@@ -176,6 +176,9 @@ public class Activations{
 		}
 	}
 	
+
+
+	
 	public static class Softmax {
 		/**
          * Xavier Weight initialization

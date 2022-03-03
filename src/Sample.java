@@ -1,8 +1,8 @@
 public class Sample {
     
-    private final double[]      IMAGE_1D;   //array which keeps the image
+    private final double[]      IMAGE_1D;   //array which keeps the image sample in 1d array
     private final double        LABEL;      //label of the sample
-    private final double[][]    IMAGE_2D;
+    private final double[][]    IMAGE_2D;   //array of 2 dimension for the imaage sample
     double[] one_hot;                       //adding the target value to the class
   
     public Sample(final double[] IMAGE, final double LABEL){

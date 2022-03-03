@@ -18,9 +18,9 @@ public class Layers {
         this.KERNEL_Y       = KERNEL_Y;
         this.KERNEL_X       = KERNEL_X;
         this.ACTIVATION     = ACTIVATION;
-        this.NEURONS        = neurons_init(NEURONS);
-        this.OUTPUT_NODES   = outputNodes_init();
-        this.NEURAL_LINK    = neuraLink_init();
+        this.NEURONS        = neurons_init(NEURONS);    //initialising the neurons with the neurons passed as parameters
+        this.OUTPUT_NODES   = outputNodes_init();       //initialising the output nodes 
+        this.NEURAL_LINK    = neuraLink_init();         //initialising the link between the neurons
     }
 
 // layers for Dense
@@ -33,29 +33,31 @@ public class Layers {
 
 // ----------- ACTIVATION FUNCTIONS --------------------
     public static enum Activation {
-        // Sigmoid Activation containing the linear transformation, non linear, and the weight inizialization
+        // Swish Activation containing the linear transformation, non linear, and the weight inizialization
         SWISH{
             public void function(final Node NODE, final Layers LAYER){NODE.setNode_Value(Activations.Swish.function                  (NODE.getForward_Linear()));}
             public void derivative(final Node NODE, final Layers LAYER){NODE.setPartial_Derivative(Activations.Swish.derivative      (NODE.getBack_Linear(), NODE.getOutputNode()));}
             public double random_weight(final Layers LAYER){ return Activations.Swish.weight_inizialization(LAYER.getInputs().length * (LAYER.getKernel_Y() * LAYER.getKernel_X()));}
         }, 
+        // RELU Activation containing the linear transformation, non linear, and the weight inizialization
         RELU{
             public void function(final Node NODE, final Layers LAYER){NODE.setNode_Value(Activations.Relu.function                   (NODE.getForward_Linear()));}
             public void derivative(final Node NODE, final Layers LAYER){NODE.setPartial_Derivative(Activations.Relu.derivative       (NODE.getBack_Linear()));}
             public double random_weight(final Layers LAYER){ return Activations.Relu.weight_inizialization (LAYER.getInputs().length * (LAYER.getKernel_Y() * LAYER.getKernel_X()));}
         },
+        // Leaky RELU Activation containing the linear transformation, non linear, and the weight inizialization
         LRELU{
             public void function(final Node NODE, final Layers LAYER){NODE.setNode_Value(Activations.Lrelu.function                  (NODE.getForward_Linear()));}
             public void derivative(final Node NODE, final Layers LAYER){NODE.setPartial_Derivative(Activations.Lrelu.derivative      (NODE.getBack_Linear()));}
             public double random_weight(final Layers LAYER){ return Activations.Lrelu.weight_inizialization(LAYER.getInputs().length * (LAYER.getKernel_Y() * LAYER.getKernel_X()));}
         },
+        // SOFTMAX Activation containing the linear transformation, non linear, and the weight inizialization
         SOFTMAX{
             public void function(final Node NODE, final Layers LAYER){NODE.setNode_Value(Activations.Softmax.function                (NODE, LAYER.getNodeArray()));}
             public void derivative(final Node NODE, final Layers LAYER){ NODE.setPartial_Derivative(1.0); }
             public double random_weight(final Layers LAYER){ return Activations.Softmax.weight_inizialization(LAYER.getInputs().length * (LAYER.getKernel_Y() * LAYER.getKernel_X()));}
         };
-
-        // 
+        // declaring all abstract methods in order not to make mistakes inside the activation functions
             public abstract void function(final Node NODE, final Layers LAYER);
             public abstract void derivative(final Node NODE, final Layers LAYER);
             public abstract double random_weight(final Layers LAYER);
@@ -156,21 +158,22 @@ public class Layers {
     private double derivative_gen(final Node OUTPUT_NEURONS){
 
         this.ACTIVATION.derivative(OUTPUT_NEURONS, this); //calling the derivative
-        OUTPUT_NEURONS.set_DerivativeSum();
+        OUTPUT_NEURONS.set_DerivativeSum(); //setting the derivative sum of the neurons
 
-        return OUTPUT_NEURONS.getDerivative();
+        return OUTPUT_NEURONS.getDerivative(); //it returns the output given from the derivative
 
 
     }
 
 // propagating the derivative for the other layers
-   private void propagation_gradient(final Neuron NEURON, final double SUM_DERIVATIVE, final int FILTER, final int KERNEL_Y, final int KERNEL_X, final int SLIDE){
-    try{
+    private void propagation_gradient(final Neuron NEURON, final double SUM_DERIVATIVE, final int FILTER, final int KERNEL_Y, final int KERNEL_X, final int SLIDE){
+     try{
             // forward propagation
             // storing the gradient into this layer node 
             // summing this output pixel derivative times all its inputs (find new weight gradient)
             NEURON.sumGradients(FILTER,KERNEL_Y, KERNEL_X, SUM_DERIVATIVE * this.NEURAL_LINK[FILTER][KERNEL_Y][KERNEL_X][SLIDE].getOutputNode());
-            // --------------------------------------------- //
+          
+
             // back propagation
             // storing the sum into the next layer node in back propagation way
             // summing this output pixel derivative times all its weights (find new input gradient)
@@ -178,10 +181,11 @@ public class Layers {
 
         }catch(NullPointerException e){}
 
-   }
+    }
 
 // function that creates the first layer
     public void sample_loader(final Sample SAMPLE){
+        // looping though all the outputs from the last layer so to get the next inputs length
         for(int output_y= 0; output_y < INPUTS[0].getOutputs().length; output_y++){
             for(int output_x = 0; output_x < INPUTS[0].getOutputs()[0].length; output_x++){
                 this.INPUTS[0].setOutputs(output_y, output_x, SAMPLE.getImage2D()[output_y][output_x]);
@@ -259,8 +263,7 @@ public class Layers {
 
 //update
     public void update(final int BATCH, final double LEARNING_RATE){
-        
-// looping through the neurons array
+        // looping through the neurons array and updating weights and biases
         for(final Neuron NEURON : this.NEURONS){
             NEURON.weightsUpdate(BATCH, LEARNING_RATE);
             NEURON.biasUpdate(BATCH, LEARNING_RATE);
@@ -275,13 +278,13 @@ public class Layers {
      * @param Y which will be the Y length of the kernel size
 	 * @return void
 	 */
-// initializing the matrix of weights
+// initializing the matrix of weights for Convolutional
     public void Weights_Matrix(final Neuron NEURON) {  
             // HeNormal Weight initialization
             for(int n_filters = 0; n_filters < this.INPUTS.length ; n_filters++){
                 for(int weight_row = 0; weight_row < this.KERNEL_Y; weight_row++){
                     for(int weight_col = 0; weight_col < this.KERNEL_X; weight_col++){
-                        NEURON.setWeights(n_filters, weight_row, weight_col,ACTIVATION.random_weight(this));
+                        NEURON.setWeights(n_filters, weight_row, weight_col,ACTIVATION.random_weight(this)); //setting the array weights
                     }
                 }
             }

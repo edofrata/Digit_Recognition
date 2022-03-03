@@ -1,5 +1,6 @@
 public class Loss {
     
+    // --------------------- MSE Loss Function ----------------------------
     public static class MSE{
 
     	/**
@@ -24,6 +25,7 @@ public class Loss {
         public static double derivative(final double y_hat, final double y){ return 2*(y_hat - y); }
     }
     
+    // --------------------- MAE Loss Function ----------------------------
     public static class MAE{
 
         /**
@@ -51,6 +53,7 @@ public class Loss {
         public static double derivative(final double y_hat, final double T){ return y_hat > T ? 1 : -1; }
     }
 
+    // --------------------- Cross Loss Function ----------------------------
     public static class Cross_Entropy{
         /**
 		 * 
@@ -70,8 +73,7 @@ public class Loss {
          */
         public static double derivative(final double PREV_Y, final double T){ return PREV_Y - T; }
     }
-
-
+// --------------------- Hinge Loss Function ----------------------------
     public static class Hinge{
         /**
 		 * 

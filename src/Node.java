@@ -3,11 +3,11 @@
  public class Node{
         
         private double output_value;            // output of pixel
-        private double forward_linearSum;    //output of the linear transformation in forward prop 
-        private double back_linearSum;       //output of the linear transformation in back prop
-        private double chain_rule;
-        private double partial_derivative;
-        private double derivative;
+        private double forward_linearSum;       //output of the linear transformation in forward prop 
+        private double back_linearSum;          //output of the linear transformation in back prop
+        private double chain_rule;              // it will store the sum from the chain rule 
+        private double partial_derivative;      // this will be the calculated partial derivative
+        private double derivative;              // this will be the full derivative
 
        public Node(){}
 
@@ -20,6 +20,7 @@
             this.back_linearSum     = this.forward_linearSum;
             this.forward_linearSum  = 0;
         }
+        
         // summing up in order to set chain rule
         public void addTo_Chain(final double VALUE){
             this.chain_rule += VALUE;
